@@ -1,10 +1,12 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :rent, :return]
 
   # GET /books
   # GET /books.json
   def index
-    @books = Book.all
+    #@books = Book.all
+    @books_rented     = Book.joins("JOIN rent_logs ON books.id = rent_logs.book_id AND rent_logs.return_at IS NULL")
+    @books_available  = Book.joins("JOIN rent_logs ON books.id = rent_logs.book_id WHERE (rent_logs.book_id NOT IN (SELECT rent_logs.book_id FROM rent_logs WHERE rent_logs.return_at IS NULL) OR rent_logs.id IS NULL)")
   end
 
   # GET /books/1
@@ -59,6 +61,16 @@ class BooksController < ApplicationController
       format.html { redirect_to books_url, notice: 'Book was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def rent
+    @book.rent_logs.create(user: current_user, rent_at: Time.now)
+    redirect_to books_path
+  end
+
+  def return
+    @book.rent_logs.where(return_at: nil).first.update(return_at: Time.now)
+    redirect_to books_path
   end
 
   private
