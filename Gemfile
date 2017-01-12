@@ -22,6 +22,7 @@ gem "omniauth-google-oauth2"
 group :development, :test do
   gem 'sqlite3', '1.3.12'
   gem 'byebug',  '9.0.0', platform: :mri
+  gem 'dotenv-rails'
 end
 
 group :development do
