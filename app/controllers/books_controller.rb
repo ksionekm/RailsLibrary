@@ -6,12 +6,13 @@ class BooksController < ApplicationController
   def index
     #@books = Book.all
     @books_rented     = Book.joins("JOIN rent_logs ON books.id = rent_logs.book_id AND rent_logs.return_at IS NULL")
-    @books_available  = Book.joins("JOIN rent_logs ON books.id = rent_logs.book_id WHERE (rent_logs.book_id NOT IN (SELECT rent_logs.book_id FROM rent_logs WHERE rent_logs.return_at IS NULL) OR rent_logs.id IS NULL)")
+    @books_available  = Book.joins("LEFT JOIN rent_logs ON books.id = rent_logs.book_id WHERE (rent_logs.book_id NOT IN (SELECT rent_logs.book_id FROM rent_logs WHERE rent_logs.return_at IS NULL) OR rent_logs.id IS NULL)").distinct
   end
 
   # GET /books/1
   # GET /books/1.json
   def show
+    @rents = @book.rent_logs
   end
 
   # GET /books/new

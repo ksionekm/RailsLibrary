@@ -15,12 +15,22 @@ textarea {
   resize: vertical;
 }
 
+caption { 
+    display: table-caption;
+    text-align: center;
+}
+
 .center {
   h1 {
     margin-bottom: 10px;
   }
 }
 
+caption {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
+}
 /* typography */
 
 h1, h2, h3, h4, h5, h6 {
@@ -40,7 +50,7 @@ h2 {
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
-  color: $gray-light;
+  color: #000;
 }
 
 p {

@@ -2,7 +2,9 @@
 
 <h1>Books</h1>
 
-<table>
+<% unless @books_available.empty? %>
+<table class="table-striped">
+  <caption>Available books</caption>
   <thead>
     <tr>
       <th>Title</th>
@@ -18,18 +20,21 @@
         <td><%= book.title %></td>
         <td><%= book.author %></td>
         <td><%= book.abstract %></td>
-        <td><%= link_to 'Show', book %></td>
-        <td><%= link_to 'Edit', edit_book_path(book) %></td>
-        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Rent', rent_book_path(book) %></td>
+        <td><%= link_to 'Show', book, class: "btn btn-default" %></td>
+        <td><%= link_to 'Edit', edit_book_path(book), class: "btn btn-default" %></td>
+        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %></td>
+        <td><%= link_to 'Rent', rent_book_path(book), class: "btn btn-info" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+<% end %>
 
 <br>
 
-<table>
+<% unless @books_rented.empty? %>
+<table class="table-striped">
+  <caption>Rented books</caption>
   <thead>
     <tr>
       <th>Title</th>
@@ -45,15 +50,15 @@
         <td><%= book.title %></td>
         <td><%= book.author %></td>
         <td><%= book.abstract %></td>
-        <td><%= link_to 'Show', book %></td>
-        <td><%= link_to 'Edit', edit_book_path(book) %></td>
-        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Return', return_book_path(book) %></td>
+        <td><%= link_to 'Show', book, class: "btn btn-default" %></td>
+        <% if book.rent_logs.last.user_id == current_user.id %>
+        <td><%= link_to 'Return', return_book_path(book), class: "btn btn-info" %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<% end %>
 <br>
 
-<%= link_to 'New Book', new_book_path %>
+<%= link_to 'New Book', new_book_path, class: "btn btn-info" %>
