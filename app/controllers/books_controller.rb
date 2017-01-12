@@ -4,7 +4,6 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    #@books = Book.all
     @books_rented     = Book.joins("JOIN rent_logs ON books.id = rent_logs.book_id AND rent_logs.return_at IS NULL")
     @books_available  = Book.joins("LEFT JOIN rent_logs ON books.id = rent_logs.book_id WHERE (rent_logs.book_id NOT IN (SELECT rent_logs.book_id FROM rent_logs WHERE rent_logs.return_at IS NULL) OR rent_logs.id IS NULL)").distinct
   end
@@ -75,12 +74,10 @@ class BooksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_book
       @book = Book.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
       params.require(:book).permit(:title, :author, :abstract)
     end

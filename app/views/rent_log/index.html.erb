@@ -1,17 +1,6 @@
-<p>
-  <strong>Title:</strong>
-  <%= @book.title %>
-</p>
+<h1>Rent History</h1>
 
-<p>
-  <strong>Author:</strong>
-  <%= @book.author %>
-</p>
-
-<p>
-  <strong>Abstract:</strong>
-  <%= @book.abstract %>
-</p>
+<br>
 
 <% unless @rents.empty? %>
 <table class="table-striped table-bordered">
@@ -19,6 +8,7 @@
   <thead>
     <tr>
       <th>User</th>
+      <th>Book Title</th>
       <th>Rented at</th>
       <th>Returned at</th>
     </tr>
@@ -28,6 +18,7 @@
     <% @rents.each do |rent| %>
       <tr>
         <td><%= rent.user.email %></td>
+        <td><% if rent.book != nil %><%= rent.book.title %><% else %>Book deleted<% end %></td>
         <td><%= rent.rent_at.strftime("%Y-%m-%d %H:%M") %></td>
         <td><% if rent.return_at != nil %><%= rent.return_at.strftime("%Y-%m-%d %H:%M") %><% end %></td>
       </tr>
@@ -35,7 +26,7 @@
   </tbody>
 </table>
 <% end %>
+
 <br>
 
-<%= link_to 'Edit', edit_book_path(@book), class: "btn btn-default" %> |
 <%= link_to 'Back', books_path, class: "btn btn-info" %>
